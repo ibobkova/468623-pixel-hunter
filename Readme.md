@@ -1,7 +1,7 @@
 # Личный проект «Пиксель хантер» [![Build status][travis-image]][travis-url]
 
 * Студент: [Irina Grinko](https://up.htmlacademy.ru/ecmascript/6/user/468623).
-* Наставник: `Неизвестно`.
+* Наставник: [Dan Onoshko](https://htmlacademy.ru/profile/id154426).
 
 ---
 
