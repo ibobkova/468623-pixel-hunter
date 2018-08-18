@@ -1,89 +1,25 @@
-'use strict';
+import {changeScreen} from './util';
+import introScreen from './intro-screen';
+import greetingScreen from './greeting-screen';
 
-const KeyboardKeys = {
-  RIGHT_ARROW: 39,
-  LEFT_ARROW: 37
-};
+// Select the node that will be observed for mutations DOM
+const targetNode = document.querySelector(`#main`);
 
-/**
- * Массив со всеми возможными DOM-элементами экранов приложения, кроме модальных окон
- */
-const mainElement = document.querySelector(`#main`);
-const screens = Array.from(document.querySelectorAll(`template:not(#modal-confirm):not(#modal-error)`))
-  .map((it) => it.content);
+// Options for the observer (which mutations to observe)
+const config = {attributes: true, childList: true, subtree: true};
 
-/**
- * Функция, которая вставляет выбранный элемент в DOM
- * @param {DOM} element - выбранный элемент для вставки
- */
-const selectSlide = (element) => {
-  mainElement.innerHTML = ``;
-  mainElement.appendChild(element.cloneNode(true));
-};
-
-/**
- * Функцию, которая по переданному номеру показывает экран из массива
- * @param index номер экрана
- */
-let current = 0;
-const selectScreen = (index) => {
-  index = index < 0 ? screens.length - 1 : index;
-  index = index >= screens.length ? 0 : index;
-  current = index;
-  selectSlide(screens[current]);
-};
-
-/**
- * Добавляем обработчик клавиатурных событий на document,
- * который будет по нажатию на клавиши-стрелок ← и → переключать экраны на предыдущий и следующий
- */
-document.addEventListener(`keydown`, (evt) => {
-  switch (evt.keyCode) {
-    case KeyboardKeys.RIGHT_ARROW:
-      selectScreen(current + 1);
-      break;
-    case KeyboardKeys.LEFT_ARROW:
-      selectScreen(current - 1);
-      break;
+// Callback function to execute when mutations are observed
+const clickBackButton = () => {
+  if (document.querySelector(`.back`)) {
+    const backButton = document.querySelector(`.back`);
+    backButton.addEventListener(`click`, () => changeScreen(greetingScreen));
   }
-});
+};
 
-/**
- * Добавляем на страницу визуальные стрелки,
- * которые будут дублировать поведение с клавиатуры и помогут переключать экраны мышкой:
- */
-const arrowsElementHTML = `<div class="arrows__wrap"><style>
-    .arrows__wrap {
-      position: absolute;
-      top: 95px;
-      left: 50%;
-      margin-left: -56px;
-    }
-    .arrows__btn {
-      background: none;
-      border: 2px solid black;
-      padding: 5px 20px;
-    }
-  </style>
-  <button class="arrows__btn"><-</button>
-  <button class="arrows__btn">-></button>
-  </div>`;
+// Create an observer instance linked to the callback function
+const observer = new MutationObserver(clickBackButton);
 
-document.querySelector(`body`).insertAdjacentHTML(`beforeend`, arrowsElementHTML);
+// Start observing the target node for configured mutations
+observer.observe(targetNode, config);
 
-/**
- * Добавляем обработчик, который будет по клику
- * на визуальные стрелки переключать экраны на предыдущий и следующий
- */
-
-const [
-  leftButton,
-  rightButton
-] = document.querySelectorAll(`.arrows__btn`);
-
-rightButton.addEventListener(`click`, () => selectScreen(current + 1));
-leftButton.addEventListener(`click`, () => selectScreen(current - 1));
-
-selectScreen(0);
-
-
+changeScreen(introScreen);
