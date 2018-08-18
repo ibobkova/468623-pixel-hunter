@@ -1,18 +1,20 @@
 'use strict';
 
-const RIGHT_ARROW = 39;
-const LEFT_ARROW = 37;
+const KeyboardKeys = {
+  RIGHT_ARROW: 39,
+  LEFT_ARROW: 37
+};
 
 /**
  * Массив со всеми возможными DOM-элементами экранов приложения, кроме модальных окон
  */
 const mainElement = document.querySelector(`#main`);
-const screens = Array.from(document.querySelectorAll(`template:not(#modal-confirm):not(#modal-error)`)).
-map((it) => it.content);
+const screens = Array.from(document.querySelectorAll(`template:not(#modal-confirm):not(#modal-error)`))
+  .map((it) => it.content);
 
 /**
  * Функция, которая вставляет выбранный элемент в DOM
- * @param element - выбранный элемент для вставки
+ * @param {DOM} element - выбранный элемент для вставки
  */
 const selectSlide = (element) => {
   mainElement.innerHTML = ``;
@@ -24,7 +26,7 @@ const selectSlide = (element) => {
  * @param index номер экрана
  */
 let current = 0;
-const select = (index) => {
+const selectScreen = (index) => {
   index = index < 0 ? screens.length - 1 : index;
   index = index >= screens.length ? 0 : index;
   current = index;
@@ -37,11 +39,11 @@ const select = (index) => {
  */
 document.addEventListener(`keydown`, (evt) => {
   switch (evt.keyCode) {
-    case RIGHT_ARROW:
-      select(current + 1);
+    case KeyboardKeys.RIGHT_ARROW:
+      selectScreen(current + 1);
       break;
-    case LEFT_ARROW:
-      select(current - 1);
+    case KeyboardKeys.LEFT_ARROW:
+      selectScreen(current - 1);
       break;
   }
 });
@@ -74,16 +76,14 @@ document.querySelector(`body`).insertAdjacentHTML(`beforeend`, arrowsElementHTML
  * на визуальные стрелки переключать экраны на предыдущий и следующий
  */
 
-document.querySelector(`.arrows__wrap`).addEventListener(`click`, (evt) => {
-  let arrow = evt.target;
+const [
+  leftButton,
+  rightButton
+] = document.querySelectorAll(`.arrows__btn`);
 
-  if (arrow.textContent === `<-`) {
-    select(current - 1);
-  } else if (arrow.textContent === `->`) {
-    select(current + 1);
-  }
-});
+rightButton.addEventListener(`click`, (evt) => selectScreen(current + 1));
+leftButton.addEventListener(`click`, (evt) => selectScreen(current - 1));
 
-select(0);
+selectScreen(0);
 
 
