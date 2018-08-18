@@ -81,8 +81,8 @@ const [
   rightButton
 ] = document.querySelectorAll(`.arrows__btn`);
 
-rightButton.addEventListener(`click`, (evt) => selectScreen(current + 1));
-leftButton.addEventListener(`click`, (evt) => selectScreen(current - 1));
+rightButton.addEventListener(`click`, () => selectScreen(current + 1));
+leftButton.addEventListener(`click`, () => selectScreen(current - 1));
 
 selectScreen(0);
 
