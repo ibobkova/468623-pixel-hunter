@@ -49,7 +49,6 @@ const template = `<header class="header">
     </ul>
   </section>`;
 
-
 const gameSecondScreen = render(template);
 const formGame = gameSecondScreen.querySelector(`.game__content`);
 
