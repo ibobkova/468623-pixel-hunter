@@ -17,5 +17,3 @@ asterisk.addEventListener(`click`, () => {
 });
 
 export default introScreen;
-
-

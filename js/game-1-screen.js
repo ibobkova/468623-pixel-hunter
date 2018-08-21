@@ -64,7 +64,9 @@ const gameFirstScreen = render(template);
 const formGame = gameFirstScreen.querySelector(`.game__content`);
 
 formGame.addEventListener(`click`, () => {
-  if (formGame.querySelectorAll(`.game__answer input:checked + span`).length === 2) {
+  if (
+    formGame.querySelectorAll(`.game__answer input:checked + span`).length === 2
+  ) {
     setTimeout(() => {
       changeScreen(gameSecondScreen);
       formGame.reset();

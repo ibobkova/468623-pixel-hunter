@@ -49,5 +49,3 @@ buttonPost.addEventListener(`click`, () => {
 });
 
 export default rulesScreen;
-
-
